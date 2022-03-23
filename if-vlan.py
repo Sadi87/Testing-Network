@@ -1,11 +1,16 @@
-import getpass
+
 import getpass
 import sys
 import telnetlib
 
-HOST = raw_input("Enter Device IP: ")
-user = raw_input("Enter your Telnet username: ")
-password = getpass.getpass()
+HOST = input ("Enter Device IP: ")
+user = input ("Enter your Telnet username: ")
+try:
+    p = getpass.getpass()
+except Exception as error:
+    print('ERROR', error)
+else:
+    print('Password entered:', p)
 
 tn = telnetlib.Telnet(HOST)
 
@@ -25,4 +30,4 @@ tn.write("end")
 tn.write("exit\n")
 tn.write("wr\n")
 
-print tn.read_all()
+print(tn.read_all)
