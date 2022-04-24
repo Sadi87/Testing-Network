@@ -1,4 +1,5 @@
 import imp
+from ipaddress import ip_address
 import telnetlib
 import getpass
 
@@ -27,6 +28,26 @@ for line in f_handle:
         j = str(i)
         tn.write(b"vlan " + j.encode('ascii') + b"\n")
         tn.write(b"name VLAN_" + j.encode('ascii') + b"\n")
+        if i == 3:
+            tn.write(b"name Management" + b"\n")
+            tn.write(b"int vlan 3\n")
+            tn.write(b"ip address 192.168." +j.encode('ascii') + b"1.1 255.255.255.0\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+        if i == 4:
+            tn.write(b"name Student" + b"\n")
+            tn.write(b"int vlan 4\n")
+            tn.write(b"ip address 192.168." +j.encode('ascii') + b"1.1 255.255.255.0\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+        if i == 5:
+            tn.write(b"name Staff" + b"\n")
+            tn.write(b"int vlan 5\n")
+            tn.write(b"ip address 192.168." +j.encode('ascii') + b"1.1 255.255.255.0\n")
+            tn.write(b"no shutdown\n")
+        
+    
+
     
     tn.write(b"end\n")
     tn.write(b"exit\n")
