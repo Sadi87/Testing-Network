@@ -1,17 +1,16 @@
 
+
 import telnetlib
 import getpass
-
-from vlan1 import HOST
-
 
 user = input("Enter the Telnet Username: ")
 password = getpass.getpass("Enter the telnet password: ")
 
-f_handle = open('rp.txt')
-
-for line in f_handle:
-    HOST = line.strip('\n')
+with open('rp.txt') as f:
+    ip_list = f.read().splitlines()
+count = 2
+for line in ip_list:
+    HOST = line.strip("\n")
     print("Telnet to host: " + HOST)
     tn = telnetlib.Telnet(HOST)
 
@@ -24,25 +23,88 @@ for line in f_handle:
     tn.write(b"enable\n")
     tn.write(b"cisco\n")
     tn.write(b"configure terminal\n")
+    tn.write(b"no ip domain-lookup\n")
+    tn.write(b"banner motd #This is Network Automation Assesment. Done By Sadi#\n")
+	    
+    for i in range (1,20):
+        count = count + 1
+        ##j = i-1
 
-    if f_handle == '192.168.211.159':
-        tn.write(b"interface g0/1\n")
-        tn.write(b"ip address 172.16.1.1 255.255.255.0 \n")
-        tn.write(b"no shutdown\n")
-        tn.write(b"exit\n")
-    elif f_handle == '192.168.211.160':
-        tn.write(b"interface g0/1\n")
-        tn.write(b"ip address 172.16.2.1 255.255.255.0 \n")
-        tn.write(b"no shutdown\n")
-        tn.write(b"exit\n")
-    else :
-        tn.write(b"interface loopback0\n")
-        tn.write(b"ip address 11.1.1.1 255.255.255.0 \n")
-        tn.write(b"no shutdown\n")
-        tn.write(b"exit\n")
+        if HOST == '192.168.211.159':
+           
+           
+            tn.write(b"int g0/1\n")
+            tn.write(b"ip address 172.16." + str(count + 1).encode('ascii') + b".1 255.255.255.0\n")
+            tn.write(b"description to S1\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"ip dhcp exclude 172.16." + str(count + 1).encode('ascii') + b".1 172.16." + str(count + 1).encode('ascii') + b".15\n")
+            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"network 172.16." + str(count + 1).encode('ascii') + b".0 255.255.255.0\n")
+            tn.write(b"defau 172.16." + str(count + 1).encode('ascii') + b".1\n")
+            tn.write(b"dns 8.8.8.8\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"int g0/2\n")
+            tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".1 255.255.255.0\n")
+            tn.write(b"description to S2\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"ip dhcp exclude 172.16." + str(count + 2).encode('ascii') + b".1 172.16." + str(count + 2).encode('ascii') + b".15\n")
+            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 255.255.255.0\n")
+            tn.write(b"defau 172.16." + str(count + 2).encode('ascii') + b".1\n")
+            tn.write(b"dns 8.8.8.8\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"router ospf 10\n")
+            tn.write(b"router-id " + str(i).encode('ascii') + b"." + str(i).encode('ascii') + b"." + str(count).encode('ascii') + b"." + b"1 \n")
+            tn.write(b"network 172.16." + str(count + 1).encode('ascii') + b".0 0.0.0.255 area 0 \n")
+            tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
+                
+            break
+            ## this is for another router 
+        
+        if HOST == '192.168.211.160':
+            
+            
+            tn.write(b"int g0/1\n")
+            tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".1 255.255.255.0\n")
+            tn.write(b"description to S1\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"ip dhcp exclude 172.16." + str(count + 2).encode('ascii') + b".1 172.16." + str(count + 2).encode('ascii') + b".15\n")
+            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 255.255.255.0\n")
+            tn.write(b"defau 172.16." + str(count + 2).encode('ascii') + b".1\n")
+            tn.write(b"dns 8.8.8.8\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"int g0/2\n")
+            tn.write(b"ip address 172.16." + str(count + 3).encode('ascii') + b".1 255.255.255.0\n")
+            tn.write(b"description to S2\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"ip dhcp exclude 172.16." + str(count + 3).encode('ascii') + b".1 172.16." + str(count + 3).encode('ascii') + b".15\n")
+            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"network 172.16." + str(count + 3).encode('ascii') + b".0 255.255.255.0\n")
+            tn.write(b"defau 172.16." + str(count + 3).encode('ascii') + b".1\n")
+            tn.write(b"dns 8.8.8.8\n")
+            tn.write(b"exit\n")
+
+            tn.write(b"router ospf 10\n")
+            tn.write(b"router-id " + str(i).encode('ascii') + b"." + str(i).encode('ascii') + b"." + str(count).encode('ascii') + b"." + b"1 \n")
+            tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
+            tn.write(b"network 172.16." + str(count + 3).encode('ascii') + b".0 0.0.0.255 area 0 \n")
+                
+            break
+            
     
-
-tn.write(b"end\n")
-tn.write(b"wr\n")
-tn.write(b"exit\n")
-print(tn.read_all().decode())
+    tn.write(b"end\n")
+    tn.write(b"wr\n")
+    tn.write(b"exit\n")
+    print(tn.read_all().decode())
