@@ -43,7 +43,7 @@ for line in ip_list:
             
             ## Dhcp for int g0/1
             tn.write(b"ip dhcp exclude 172.16." + str(count + 1).encode('ascii') + b".1 172.16." + str(count + 1).encode('ascii') + b".15\n")
-            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"ip dhcp pool VLAN_" + str(count + 1).encode('ascii') + b"\n")
             tn.write(b"network 172.16." + str(count + 1).encode('ascii') + b".0 255.255.255.0\n")
             tn.write(b"defau 172.16." + str(count + 1).encode('ascii') + b".1\n")
             tn.write(b"dns 8.8.8.8\n")
@@ -61,7 +61,7 @@ for line in ip_list:
 
             ## Dhcp for int g0/2
             tn.write(b"ip dhcp exclude 172.16." + str(count + 2).encode('ascii') + b".1 172.16." + str(count + 2).encode('ascii') + b".15\n")
-            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"ip dhcp pool VLAN_" + str(count + 2).encode('ascii') + b"\n")
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 255.255.255.0\n")
             tn.write(b"defau 172.16." + str(count + 2).encode('ascii') + b".1\n")
             tn.write(b"dns 8.8.8.8\n")
@@ -92,7 +92,7 @@ for line in ip_list:
 
             ## R2  DHCP FOR int g0/1 config
             tn.write(b"ip dhcp exclude 172.16." + str(count + 2).encode('ascii') + b".1 172.16." + str(count + 2).encode('ascii') + b".15\n")
-            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"ip dhcp pool VLAN_" + str(count + 2).encode('ascii') + b"\n")
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 255.255.255.0\n")
             tn.write(b"defau 172.16." + str(count + 2).encode('ascii') + b".1\n")
             tn.write(b"dns 8.8.8.8\n")
@@ -108,9 +108,9 @@ for line in ip_list:
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
 
-            ## R2 for int g0/1 config
+            ## R2 dhcp for int g0/2 config
             tn.write(b"ip dhcp exclude 172.16." + str(count + 3).encode('ascii') + b".1 172.16." + str(count + 3).encode('ascii') + b".15\n")
-            tn.write(b"ip dhcp pool VLAN" + str(i).encode('ascii') + b"\n")
+            tn.write(b"ip dhcp pool VLAN_" + str(count + 3).encode('ascii') + b"\n")
             tn.write(b"network 172.16." + str(count + 3).encode('ascii') + b".0 255.255.255.0\n")
             tn.write(b"defau 172.16." + str(count + 3).encode('ascii') + b".1\n")
             tn.write(b"dns 8.8.8.8\n")
