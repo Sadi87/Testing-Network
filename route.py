@@ -54,7 +54,7 @@ for line in ip_list:
             tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".2 255.255.255.0\n")
             tn.write(b"standby 10 ip 172.16." + str(count + 2).encode('ascii') + b".1\n")
             tn.write(b"standby 10 priority 200\n")
-            tn.write(b"standby 10 preempt\n")
+            ##tn.write(b"standby 10 preempt\n")
             tn.write(b"description to S2\n")
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
@@ -72,6 +72,7 @@ for line in ip_list:
             tn.write(b"router-id " + str(i).encode('ascii') + b"." + str(i).encode('ascii') + b"." + str(count).encode('ascii') + b"." + b"1 \n")
             tn.write(b"network 172.16." + str(count + 1).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
+            tn.write(b"network 0.0.0.0 0.0.0.0 area 0\n")
             
             break
 
@@ -103,7 +104,7 @@ for line in ip_list:
             tn.write(b"description to S2\n")
             tn.write(b"standby 10 ip 172.16." + str(count + 3).encode('ascii') + b".1\n")
             tn.write(b"standby 10 priority 200\n")
-            tn.write(b"standby 10 preempt\n")
+            ##tn.write(b"standby 10 preempt\n")
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
 
@@ -120,7 +121,7 @@ for line in ip_list:
             tn.write(b"router-id " + str(i).encode('ascii') + b"." + str(i).encode('ascii') + b"." + str(count).encode('ascii') + b"." + b"1 \n")
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 172.16." + str(count + 3).encode('ascii') + b".0 0.0.0.255 area 0 \n")
-                
+            tn.write(b"network 0.0.0.0 0.0.0.0 area 0\n")
             break
 
         
