@@ -1,0 +1,6 @@
+enable
+cisco
+config t
+banner motd #This is SSH configuration pogram#
+exit
+show ip int br

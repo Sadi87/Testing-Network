@@ -10,7 +10,7 @@ with open('rp.txt') as f:
     ip_list = f.read().splitlines()
 count = 2
 for line in ip_list:
-    HOST = line.strip("\n")
+    HOST = line.strip('\n')
     print("Telnet to host: " + HOST)
     tn = telnetlib.Telnet(HOST)
 
@@ -73,6 +73,7 @@ for line in ip_list:
             tn.write(b"network 172.16." + str(count + 1).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 0.0.0.0 0.0.0.0 area 0\n")
+            ##tn.write(b"network " + str(HOST).encode('ascii'))
             
             break
 
@@ -122,6 +123,8 @@ for line in ip_list:
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 172.16." + str(count + 3).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 0.0.0.0 0.0.0.0 area 0\n")
+            ##tn.write(b"network " + str(HOST).encode('ascii'))
+
             break
 
         
