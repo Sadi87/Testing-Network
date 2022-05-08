@@ -27,7 +27,7 @@ for line in ip_list:
     tn.write(b"banner motd #This is Network Automation Assesment. Done By Sadi#\n")
 	    
     for i in range (1,20):
-        count = count + 1
+        count = count + 2
         
         if Index(line) == HOST:
            
@@ -35,18 +35,12 @@ for line in ip_list:
             tn.write(b"int g0/1\n")
             tn.write(b"ip address 172.16." + str(count + 1).encode('ascii') + b".1 255.255.255.0\n")
             tn.write(b"description to S1\n")
-           ## tn.write(b"standby 10 ip 172.16." + str(count + 1).encode('ascii') + b".1\n")
-            ##tn.write(b"standby 10 priority 255\n")
-            ##tn.write(b"standby 10 preempt\n")
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
 
             ## interface g0/2 configuration
             tn.write(b"int g0/2\n")
             tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".1 255.255.255.0\n")
-           ## tn.write(b"standby 10 ip 172.16." + str(count + 2).encode('ascii') + b".1\n")
-           ## tn.write(b"standby 10 priority 200\n")
-            ##tn.write(b"standby 10 preempt\n")
             tn.write(b"description to S2\n")
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
@@ -77,10 +71,8 @@ for line in ip_list:
             tn.write(b"network " + str(HOST).encode('ascii') + b" 0.0.0.255 area 0\n")
             
             break
- 
-       
-
         
+
     tn.write(b"end\n")
     ##tn.write(b"wr\n")
     tn.write(b"show ip int br\n")
