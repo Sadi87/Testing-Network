@@ -6,10 +6,9 @@ import getpass
 user = input("Enter the Telnet Username: ")
 password = getpass.getpass("Enter the telnet password: ")
 
-with open('rp.txt') as f:
-    ip_list = f.read().splitlines()
-count = 2
-for line in ip_list:
+f_handler = open('rp.txt')
+count = 3
+for line in f_handler:
     HOST = line.strip('\n')
     print("Telnet to host: " + HOST)
     tn = telnetlib.Telnet(HOST)
@@ -22,10 +21,8 @@ for line in ip_list:
     
     tn.write(b"enable\n")
     tn.write(b"cisco\n")
-    tn.write(b"configure terminal\n")
-    tn.write(b"no ip domain-lookup\n")
-    tn.write(b"banner motd #This is Network Automation Assesment. Done By Sadi#\n")
-	    
+    tn.write(b"config t\n")
+    tn.write(b"no ip domain-lookup\n")    
     for i in range (1,20):
         count = count + 1
         
@@ -33,30 +30,23 @@ for line in ip_list:
            
            ## interface g0/1 configuration 
             tn.write(b"int g0/1\n")
-            tn.write(b"ip address 172.16." + str(count + 1).encode('ascii') + b".2 255.255.255.0\n")
-            tn.write(b"description to S1\n")
-            tn.write(b"standby 10 ip 172.16." + str(count + 1).encode('ascii') + b".1\n")
-            tn.write(b"standby 10 priority 255\n")
-            tn.write(b"standby 10 preempt\n")
+            tn.write(b"ip address 172.16." + str(count + 1).encode('ascii') + b".1 255.255.255.0\n")
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
             
+            ## interface g0/2 config
+            tn.write(b"int g0/2\n")
+            tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".1 255.255.255.0\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+
+
             ## Dhcp for int g0/1
             tn.write(b"ip dhcp exclude 172.16." + str(count + 1).encode('ascii') + b".1 172.16." + str(count + 1).encode('ascii') + b".15\n")
             tn.write(b"ip dhcp pool VLAN_" + str(count + 1).encode('ascii') + b"\n")
             tn.write(b"network 172.16." + str(count + 1).encode('ascii') + b".0 255.255.255.0\n")
             tn.write(b"defau 172.16." + str(count + 1).encode('ascii') + b".1\n")
             tn.write(b"dns 8.8.8.8\n")
-            tn.write(b"exit\n")
-
-            ## interface g0/2 config
-            tn.write(b"int g0/2\n")
-            tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".2 255.255.255.0\n")
-            tn.write(b"standby 10 ip 172.16." + str(count + 2).encode('ascii') + b".1\n")
-            tn.write(b"standby 10 priority 200\n")
-            ##tn.write(b"standby 10 preempt\n")
-            tn.write(b"description to S2\n")
-            tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
 
             ## Dhcp for int g0/2
@@ -73,7 +63,7 @@ for line in ip_list:
             tn.write(b"network 172.16." + str(count + 1).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 0.0.0.0 0.0.0.0 area 0\n")
-            ##tn.write(b"network " + str(HOST).encode('ascii'))
+            tn.write(b"network " + str(HOST).encode('ascii') + b" 0.0.0.255 area 0\n")
             
             break
 
@@ -83,11 +73,19 @@ for line in ip_list:
             
             ## R2 int g0/1 config
             tn.write(b"int g0/1\n")
-            tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".2 255.255.255.0\n")
+            tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".1 255.255.255.0\n")
             tn.write(b"description to S1\n")
-            tn.write(b"standby 10 ip 172.16." + str(count + 2).encode('ascii') + b".1\n")
-            tn.write(b"standby 10 priority 255\n")
-            tn.write(b"standby 10 preempt\n")
+            tn.write(b"no standby 10 ip 172.16." + str(count + 2).encode('ascii') + b".1\n")
+            tn.write(b"no standby 10 priority 255\n")
+            tn.write(b"no standby 10 preempt\n")
+            tn.write(b"no shutdown\n")
+            tn.write(b"exit\n")
+
+            
+
+            ## R2 int g0/2 config
+            tn.write(b"int g0/2\n")
+            tn.write(b"ip address 172.16." + str(count + 3).encode('ascii') + b".1 255.255.255.0\n")
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
 
@@ -97,16 +95,6 @@ for line in ip_list:
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 255.255.255.0\n")
             tn.write(b"defau 172.16." + str(count + 2).encode('ascii') + b".1\n")
             tn.write(b"dns 8.8.8.8\n")
-            tn.write(b"exit\n")
-
-            ## R2 int g0/2 config
-            tn.write(b"int g0/2\n")
-            tn.write(b"ip address 172.16." + str(count + 3).encode('ascii') + b".2 255.255.255.0\n")
-            tn.write(b"description to S2\n")
-            tn.write(b"standby 10 ip 172.16." + str(count + 3).encode('ascii') + b".1\n")
-            tn.write(b"standby 10 priority 200\n")
-            ##tn.write(b"standby 10 preempt\n")
-            tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
 
             ## R2 dhcp for int g0/2 config
@@ -123,8 +111,7 @@ for line in ip_list:
             tn.write(b"network 172.16." + str(count + 2).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 172.16." + str(count + 3).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 0.0.0.0 0.0.0.0 area 0\n")
-            ##tn.write(b"network " + str(HOST).encode('ascii'))
-
+            tn.write(b"network " + str(HOST).encode('ascii') + b" 0.0.0.255 area 0\n")
             break
 
         
