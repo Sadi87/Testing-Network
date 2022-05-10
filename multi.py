@@ -1,4 +1,3 @@
-
 from ast import Index
 import telnetlib
 import getpass
@@ -9,6 +8,7 @@ password = getpass.getpass("Enter the telnet password: ")
 with open('ip.txt') as f:
     ip_list = f.read().splitlines()
 count = 2
+
 for line in ip_list:
     HOST = line.strip('\n')
     print("Telnet to host: " + HOST)
@@ -25,17 +25,15 @@ for line in ip_list:
     tn.write(b"configure terminal\n")
     tn.write(b"no ip domain-lookup\n")
     tn.write(b"banner motd #This is Network Automation Assesment. Done By Sadi#\n")
-	    
+	
     for i in range (1,10):
         count = count + 1
-    
-            
+
         if Index(line) == HOST:
             
-        
             ##int g0/1 to switch
             tn.write(b"int g0/1\n")
-            tn.write(b"ip address 192.168." + str(i).encode('ascii') + b"." + str(count + 1).encode('ascii') + b" 255.255.255.0\n")
+            tn.write(b"ip address 192.168." + str(i).encode('ascii') + b"." + str(count + 2).encode('ascii') + b" 255.255.255.0\n")
             tn.write(b"standby 10 ip 192.168." + str(i).encode('ascii') + b".1\n")
             tn.write(b"standby 10 priority " + str(count + 50).encode('ascii') + b"\n")
             tn.write(b"standby 10 preempt\n")
@@ -57,12 +55,9 @@ for line in ip_list:
             tn.write(b"network 192.168." + str(i).encode('ascii') + b".0 0.0.0.255 area 0 \n")
             tn.write(b"network 0.0.0.0 0.0.0.0 area 0\n")
             tn.write(b"network " + str(HOST).encode('ascii') + b" 0.0.0.255 area 0\n")
-                    
-            break 
-           
-         
-
-        
+            break
+  
+            
     tn.write(b"end\n")
     ##tn.write(b"wr\n")
     tn.write(b"show ip int br\n")

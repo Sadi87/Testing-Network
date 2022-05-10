@@ -1,7 +1,10 @@
 
 import getpass
+from ssl import _PasswordType
 import sys
 import telnetlib
+
+from paramiko import PasswordRequiredException
 
 HOST = input ("Enter Device IP: ")
 user = input ("Enter your Telnet username: ")
@@ -16,12 +19,12 @@ tn = telnetlib.Telnet(HOST)
 
 tn.read_until("Username: ")
 tn.write(user + "\n")
-if password:
+if _PasswordType:
     tn.read_until("Password: ")
-    tn.write(password + "\n")
+    tn.write(PasswordRequiredException + "\n")
 
 tn.write("enable\n")
-tn.write("cisco123\n")
+tn.write("cisco\n")
 tn.write("config t\n")
 tn.write("int loop 1\n")
 tn.write("ip address 10.10.10.1 255.255.255.0\n")

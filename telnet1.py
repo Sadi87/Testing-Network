@@ -37,7 +37,6 @@ for j in range(2,10):
 
 
 
-
 tn.write(b"exit\n")
 tn.write(b"end\n")
 tn.write(b"exit\n")

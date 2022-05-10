@@ -74,10 +74,6 @@ for line in f_handler:
             ## R2 int g0/1 config
             tn.write(b"int g0/1\n")
             tn.write(b"ip address 172.16." + str(count + 2).encode('ascii') + b".1 255.255.255.0\n")
-            tn.write(b"description to S1\n")
-            tn.write(b"no standby 10 ip 172.16." + str(count + 2).encode('ascii') + b".1\n")
-            tn.write(b"no standby 10 priority 255\n")
-            tn.write(b"no standby 10 preempt\n")
             tn.write(b"no shutdown\n")
             tn.write(b"exit\n")
 
