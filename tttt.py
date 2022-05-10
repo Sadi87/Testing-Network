@@ -61,7 +61,6 @@ for line in ip_list:
             tn.write(b"dns 8.8.8.8\n")
             tn.write(b"exit\n")
 
-
             ## Routing Protocol config
             tn.write(b"router ospf 10\n")
             tn.write(b"router-id " + str(i).encode('ascii') + b"." + str(i).encode('ascii') + b"." + str(count).encode('ascii') + b"." + b"1 \n")
