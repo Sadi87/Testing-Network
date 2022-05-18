@@ -6,6 +6,7 @@ import getpass
 user = input("Enter the Telnet Username: ")
 password = getpass.getpass("Enter the telnet password: ")
 
+
 with open('rp.txt') as f:
     ip_list = f.read().splitlines()
 count = 2
