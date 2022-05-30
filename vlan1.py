@@ -129,7 +129,7 @@ for line in ip_list:
         
 
     tn.write(b"end\n")
-    ##tn.write(b"wr\n")
+    tn.write(b"wr\n")
     tn.write(b"show ip int br\n")
     tn.write(b"show vlan br\n")
     tn.write(b"exit\n")
