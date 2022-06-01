@@ -1,19 +1,10 @@
-from netmiko import ConnectHandler
-
-iosv_l2_R1 = {
-    'device_type': 'cisco_ios',
-    'ip': '192.168.211.146',
-    'username': 'admin',
-    'password': 'cisco'
-
-
-
-all_devices = [iosv_l2_s1]
-
-for devices in all_devices:
-    net_connect = ConnectHandler(**devices)
-    for n in range (2,21):
-       print ("Creating VLAN " + str(n))
-       config_commands = ['vlan ' + str(n), 'name Python_VLAN ' + str(n)]
-       output = net_connect.send_config_set(config_commands)
-       print (output)
+import cv2
+from cv2 import blur
+image = cv2.imread("sadi.jpeg")
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+inverted = 255-gray_image
+blur = cv2.GaussianBlur(inverted, (21, 21) , 0)
+invertedblur = 255-blur
+sketch = cv2.divide(gray_image, invertedblur, scale=256.0)
+cv2.imwrite("sketch_image.png", sketch)
+cv2.imshow("Image", sketch)
